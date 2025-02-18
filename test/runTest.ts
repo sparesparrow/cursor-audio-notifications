@@ -9,15 +9,22 @@ async function main() {
         // The folder containing your test suite
         const extensionTestsPath = path.resolve(__dirname, './suite/index');
 
-        // Use Cursor AppImage for tests
-        const cursorExecutablePath = process.env.CURSOR_EXECUTABLE || '/usr/local/bin/cursor';
+        // Get VS Code executable from environment or use system VS Code
+        const vscodeExecutablePath = process.env.VSCODE_EXECUTABLE || process.env.CODE_EXECUTABLE;
 
-        // Run tests with Cursor AppImage
+        // Run tests
         await runTests({ 
-            extensionDevelopmentPath, 
+            extensionDevelopmentPath,
             extensionTestsPath,
-            vscodeExecutablePath: cursorExecutablePath,
-            version: 'stable'
+            version: '1.85.0',
+            launchArgs: [
+                '--disable-extensions', // Disable other extensions that might interfere
+                '--disable-gpu', // Disable GPU acceleration in CI
+                '--no-sandbox',
+                '--disable-updates',
+                '--wait'
+            ],
+            ...(vscodeExecutablePath ? { vscodeExecutablePath } : {})
         });
     } catch (err) {
         console.error('Failed to run tests:', err);

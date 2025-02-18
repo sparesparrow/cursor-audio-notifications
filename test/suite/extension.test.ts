@@ -6,6 +6,21 @@ import { NotificationManager } from '../../src/services/notificationManager';
 import { EventHandler } from '../../src/handlers/eventHandler';
 import * as path from 'path';
 
+// Mock modules before imports
+const mockPlay = sinon.stub().callsFake((filepath: string, opts: any, cb: any) => {
+    if (cb) cb(null);
+    return null;
+});
+
+const mockPlayer = {
+    play: mockPlay
+};
+
+// Mock the entire play-sound module
+require.cache[require.resolve('play-sound')] = {
+    exports: () => mockPlayer
+} as NodeModule;
+
 suite('Extension Test Suite', () => {
     let audioPlayer: AudioPlayer;
     let notificationManager: NotificationManager;
@@ -18,6 +33,9 @@ suite('Extension Test Suite', () => {
         audioPlayer = new AudioPlayer(extensionPath);
         notificationManager = new NotificationManager();
         eventHandler = new EventHandler(audioPlayer, notificationManager);
+
+        // Mock the playSound method to avoid actual sound playback
+        sandbox.stub(audioPlayer, 'playSound').resolves();
     });
 
     teardown(() => {

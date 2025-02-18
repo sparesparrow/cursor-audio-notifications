@@ -6,12 +6,13 @@ export function run(): Promise<void> {
     // Create the mocha test
     const mocha = new Mocha({
         ui: 'tdd',
-        color: true
+        color: true,
+        timeout: 60000 // Increase timeout for CI
     });
 
-    const testsRoot = path.resolve(__dirname, '..');
+    const testsRoot = path.resolve(__dirname, '.');
 
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
         glob('**/**.test.js', { cwd: testsRoot }, (err: Error | null, files: string[]) => {
             if (err) {
                 return reject(err);
@@ -30,6 +31,7 @@ export function run(): Promise<void> {
                     }
                 });
             } catch (err) {
+                console.error(err);
                 reject(err);
             }
         });

@@ -8,23 +8,39 @@
         "type": "git",
         "url": "https://github.com/sparesparrow/cursor-audio-notifications"
     },
+    "bugs": {
+        "url": "https://github.com/sparesparrow/cursor-audio-notifications/issues"
+    },
+    "homepage": "https://github.com/sparesparrow/cursor-audio-notifications#readme",
     "engines": {
-        "vscode": "^1.96.0"
+        "vscode": "^1.85.0"
     },
     "categories": [
         "Other"
     ],
-    "activationEvents": [],
+    "keywords": [
+        "cursor",
+        "audio",
+        "notifications",
+        "sound",
+        "alerts",
+        "productivity"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
     "main": "./out/extension.js",
     "contributes": {
         "commands": [
             {
                 "command": "audio-notifications.showAlert",
-                "title": "Show Audio Notification"
+                "title": "Audio Notifications: Play Test Sound",
+                "category": "Audio Notifications"
             },
             {
                 "command": "audio-notifications.toggleSound",
-                "title": "Toggle Audio Notifications"
+                "title": "Audio Notifications: Toggle Sound",
+                "category": "Audio Notifications"
             }
         ],
         "configuration": {
@@ -33,12 +49,12 @@
                 "audioNotifications.soundEnabled": {
                     "type": "boolean",
                     "default": true,
-                    "description": "Enable or disable sound notifications"
+                    "description": "Enable or disable all sound notifications"
                 },
                 "audioNotifications.notifyOnBuildComplete": {
                     "type": "boolean",
                     "default": true,
-                    "description": "Play sound when build completes"
+                    "description": "Play sound when build tasks complete"
                 },
                 "audioNotifications.notifyOnSave": {
                     "type": "boolean",
@@ -48,7 +64,7 @@
                 "audioNotifications.notifyOnDebugComplete": {
                     "type": "boolean",
                     "default": true,
-                    "description": "Play sound when debug session ends"
+                    "description": "Play sound when debug sessions end"
                 }
             }
         }
@@ -59,14 +75,16 @@
         "watch": "tsc -watch -p ./",
         "pretest": "npm run compile && npm run lint",
         "lint": "eslint src test --ext ts",
-        "test": "node ./out/test/runTest.js"
+        "test": "node ./out/test/runTest.js",
+        "package": "vsce package",
+        "publish": "vsce publish"
     },
     "devDependencies": {
         "@types/glob": "^8.1.0",
         "@types/mocha": "^10.0.1",
         "@types/node": "^16.18.126",
         "@types/sinon": "^10.0.15",
-        "@types/vscode": "^1.96.0",
+        "@types/vscode": "^1.85.0",
         "@typescript-eslint/eslint-plugin": "^5.30.0",
         "@typescript-eslint/parser": "^5.30.0",
         "eslint": "^8.13.0",
