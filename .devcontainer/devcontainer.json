@@ -1,0 +1,45 @@
+{
+    "name": "Cursor Audio Notifications Dev",
+    "dockerFile": "../Dockerfile",
+    "context": "..",
+    
+    // Features to add to the dev container
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {},
+        "ghcr.io/devcontainers/features/git:1": {}
+    },
+
+    // Configure tool-specific properties
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "ms-vscode.vscode-typescript-tslint-plugin"
+            ],
+            "settings": {
+                "editor.formatOnSave": true,
+                "editor.defaultFormatter": "esbenp.prettier-vscode",
+                "typescript.tsdk": "node_modules/typescript/lib"
+            }
+        }
+    },
+
+    // Use 'forwardPorts' to make a list of ports inside the container available locally
+    "forwardPorts": [],
+
+    // Use 'postCreateCommand' to run commands after the container is created
+    "postCreateCommand": "npm install",
+
+    // Set `remoteUser` to `root` to connect as root instead
+    "remoteUser": "node",
+
+    // Mount your source code
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+    "workspaceFolder": "/workspace",
+
+    // Environment variables
+    "remoteEnv": {
+        "NODE_ENV": "development"
+    }
+} 
