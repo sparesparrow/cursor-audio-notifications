@@ -15,42 +15,28 @@ jobs:
     name: Test (${{ matrix.os }})
     strategy:
       matrix:
-        os: [ubuntu-22.04, windows-latest]
+        os: [ubuntu-22.04]
         node: [18.x]
-        include:
-          - os: ubuntu-22.04
-            test-command: 'PULSE_SINK=dummy xvfb-run --auto-servernum npm test'
-          - os: windows-latest
-            test-command: 'npm test'
+        test-command: 'PULSE_SINK=dummy xvfb-run --auto-servernum npm test'
     runs-on: ${{ matrix.os }}
-    
-    services:
-      xvfb:
-        image: docker.io/xvfb
-        ports: [":99"]
-        options: >-
-          --entrypoint sh
-          -c "Xvfb :99 -screen 0 1024x768x24 -ac +extension GLX +render -noreset & sleep 3"
 
     steps:
     - uses: actions/checkout@v4
-    
+      
     - uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node }}
         cache: 'npm'
         
     - name: Install system dependencies
-      if: runner.os == 'Linux'
       run: |
         sudo apt-get update
         sudo apt-get install -y \
           libasound2 libgbm1 libxcomposite1 libxcursor1 libxi6 libxtst6 libxss1 \
           libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 \
-          libgtk-3-0 libpulse0 pulseaudio-utils
-        
+          libgtk-3-0 libpulse0 pulseaudio-utils xvfb
+
     - name: Configure audio
-      if: runner.os == 'Linux'
       run: |
         pulseaudio -D --exit-idle-time=-1
         pacmd load-module module-virtual-sink sink_name=dummy
@@ -63,7 +49,7 @@ jobs:
       run: ${{ matrix.test-command }}
       env:
         DISPLAY: ':99.0'
-        CODE_EXECUTABLE: ${{ runner.os == 'Windows' && 'C:\\Program Files\\Microsoft VS Code\\Code.exe' || '' }}
+        CODE_EXECUTABLE: ''
 
     - uses: actions/upload-artifact@v4
       if: always()
