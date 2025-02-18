@@ -1,102 +1,62 @@
 # Cursor Audio Notifications
 
-Interactive audio notifications for Cursor IDE (VSCode fork) that provide context-aware sound feedback and interactive responses.
+A VS Code/Cursor extension that provides interactive audio notifications for various IDE events.
 
 ## Features
 
-- 🔊 Audio feedback for common IDE events
-- 🛠️ Build completion notifications
-- 🐛 Debug session notifications
-- 💾 File save notifications
-- 🔧 Customizable sound settings
-- 🎯 Interactive notification responses
+- 🔊 Audio notifications for build completion
+- 💾 Optional sound alerts on file save
+- 🐛 Notifications when debug sessions end
+- ⚙️ Fully configurable notification settings
+- 🎵 Clean, non-intrusive sound effects
 
 ## Installation
 
-1. Download the VSIX package from the releases page
-2. Install in Cursor IDE:
-   - Windows: Copy to `%USERPROFILE%\.cursor\extensions`
-   - Mac/Linux: Copy to `~/.cursor/extensions`
-
-Or build from source:
-```bash
-git clone https://github.com/yourusername/cursor-audio-notifications
-cd cursor-audio-notifications
-npm install
-npm run compile
-```
-
-## Usage
-
-The extension provides several notification types:
-
-1. Build Completion
-   - Plays sound when build tasks complete
-   - Shows interactive buttons for logs/tests
-
-2. Debug Sessions
-   - Notifies when debug sessions end
-   - Quick actions for call stack/restart
-
-3. File Saves
-   - Optional sound on file save
-   - Format/commit quick actions
-
-4. Custom Alerts
-   - Trigger via command palette
-   - Configurable sound/actions
+1. Install the extension from the VS Code/Cursor marketplace
+2. Reload your editor
+3. Configure the settings to your preference
 
 ## Configuration
 
-Configure in VSCode settings:
+This extension contributes the following settings:
 
-```json
-{
-  "audioNotifications.soundEnabled": true,
-  "audioNotifications.notifyOnBuildComplete": true,
-  "audioNotifications.notifyOnSave": false,
-  "audioNotifications.notifyOnDebugComplete": true
-}
-```
+* `audioNotifications.soundEnabled`: Enable/disable all sound notifications
+* `audioNotifications.notifyOnBuildComplete`: Play sound when build completes
+* `audioNotifications.notifyOnSave`: Play sound when files are saved
+* `audioNotifications.notifyOnDebugComplete`: Play sound when debug session ends
 
-## System Requirements
+## Commands
 
-- Cursor IDE v1.0.0 or higher
-- Node.js v14 or higher
-- System audio support
+* `Audio Notifications: Show Alert` - Trigger a test notification sound
+* `Audio Notifications: Toggle Sound` - Quickly enable/disable all audio notifications
 
-Linux users may need:
-```bash
-sudo apt-get install alsa-utils
-```
+## Requirements
 
-## Development
+- VS Code ^1.75.0 or Cursor IDE
+- Node.js audio playback support
 
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Run tests:
-   ```bash
-   npm test
-   ```
-4. Build:
-   ```bash
-   npm run compile
-   ```
+## Known Issues
+
+Please report any issues on the [GitHub repository](https://github.com/yourusername/cursor-audio-notifications/issues).
+
+## Release Notes
+
+### 1.0.0
+
+Initial release of Cursor Audio Notifications:
+- Basic audio notification system
+- Build completion notifications
+- Debug session notifications
+- File save notifications
+- Configuration options
 
 ## Contributing
 
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-MIT License - see LICENSE file for details
+This project is licensed under the MIT License.
 
 ## Support
 

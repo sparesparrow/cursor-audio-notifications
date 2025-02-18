@@ -24,6 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NotificationManager = void 0;
+// src/notificationManager.ts
 const vscode = __importStar(require("vscode"));
 const path = __importStar(require("path"));
 class NotificationManager {

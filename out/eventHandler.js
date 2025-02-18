@@ -24,28 +24,29 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventHandler = void 0;
+// src/eventHandler.ts
 const vscode = __importStar(require("vscode"));
 class EventHandler {
-    constructor(audioPlayer, notificationManager) {
-        this.audioPlayer = audioPlayer;
-        this.notificationManager = notificationManager;
+    constructor(_audioPlayer, _notificationManager) {
+        this._audioPlayer = _audioPlayer;
+        this._notificationManager = _notificationManager;
     }
     async handleBuildComplete(e) {
         if (e.execution.task.definition.type === 'npm' && e.exitCode === 0) {
-            await this.audioPlayer.playSound('build-complete');
-            await this.notificationManager.showBuildNotification();
+            await this._audioPlayer.playSound('build-complete');
+            await this._notificationManager.showBuildNotification();
         }
     }
     async handleDebugComplete(session) {
-        await this.audioPlayer.playSound('debug-complete');
-        await this.notificationManager.showDebugNotification(session);
+        await this._audioPlayer.playSound('debug-complete');
+        await this._notificationManager.showDebugNotification(session);
     }
     async handleFileSaved(document) {
-        await this.audioPlayer.playSound('file-saved');
-        await this.notificationManager.showSaveNotification(document);
+        await this._audioPlayer.playSound('file-saved');
+        await this._notificationManager.showSaveNotification(document);
     }
     async handleCustomAlert() {
-        await this.audioPlayer.playSound('custom-alert');
+        await this._audioPlayer.playSound('custom-alert');
         await vscode.window.showInformationMessage('Custom Alert Triggered');
     }
 }

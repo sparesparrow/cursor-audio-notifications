@@ -1,37 +1,23 @@
 import * as path from 'path';
-import * as cp from 'child_process';
-import {
-    downloadAndUnzipVSCode,
-    runTests,
-    resolveCliArgsFromVSCodeExecutablePath
-} from 'vscode-test';
+import { runTests } from 'vscode-test';
 
 async function main() {
     try {
-        // The folder containing the Extension Manifest package.json
+        // The folder containing your extension's package.json
         const extensionDevelopmentPath = path.resolve(__dirname, '../../');
 
-        // The path to the extension test script
+        // The folder containing your test suite
         const extensionTestsPath = path.resolve(__dirname, './suite/index');
 
-        // Download VS Code, unzip it and run the integration test
-        const vscodeExecutablePath = await downloadAndUnzipVSCode();
-        const [cliPath, ...args] = resolveCliArgsFromVSCodeExecutablePath(vscodeExecutablePath);
+        // Use Cursor AppImage for tests
+        const cursorExecutablePath = process.env.CURSOR_EXECUTABLE || '/usr/local/bin/cursor';
 
-        // Use cp.spawn to launch VS Code with extension
-        cp.spawnSync(cliPath, [...args, '--install-extension', extensionDevelopmentPath], {
-            encoding: 'utf-8',
-            stdio: 'inherit'
-        });
-
-        // Run the integration tests
-        await runTests({
-            vscodeExecutablePath,
-            extensionDevelopmentPath,
+        // Run tests with Cursor AppImage
+        await runTests({ 
+            extensionDevelopmentPath, 
             extensionTestsPath,
-            launchArgs: [
-                '--disable-extensions' // Disable other extensions for clean testing environment
-            ]
+            vscodeExecutablePath: cursorExecutablePath,
+            version: 'stable'
         });
     } catch (err) {
         console.error('Failed to run tests:', err);
@@ -39,4 +25,10 @@ async function main() {
     }
 }
 
-main(); 
+main();
+
+// Minimal test runner file
+
+console.log('Running tests...');
+
+// You can add your test logic here, or integrate with a testing framework. 

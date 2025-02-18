@@ -1,19 +1,23 @@
 // src/audioPlayer.ts
 import * as path from 'path';
-const play = require('play-sound')({});
+import playSound from 'play-sound';
+
+const audioPlayer = playSound();
 
 export class AudioPlayer {
-    private readonly soundsPath: string;
+    private _soundsPath: string;
 
-    constructor(extensionPath: string) {
-        this.soundsPath = path.join(extensionPath, 'sounds');
+    constructor() {
+        // You may want to define the base directory or get it from a configuration.
+        const baseDir = process.cwd();
+        this._soundsPath = path.join(baseDir, 'sounds');
     }
 
     async playSound(soundName: string): Promise<void> {
-        const soundPath = path.join(this.soundsPath, `${soundName}.mp3`);
+        const soundPath = path.join(this._soundsPath, `${soundName}.mp3`);
         
         return new Promise((resolve, reject) => {
-            play.play(soundPath, (err: Error) => {
+            audioPlayer.play(soundPath, (err: Error | null) => {
                 if (err) {
                     console.error('Error playing sound:', err);
                     reject(err);

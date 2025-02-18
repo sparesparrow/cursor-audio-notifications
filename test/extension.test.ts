@@ -13,7 +13,7 @@ suite('Extension Test Suite', () => {
 
     setup(() => {
         sandbox = sinon.createSandbox();
-        audioPlayer = new AudioPlayer(__dirname);
+        audioPlayer = new AudioPlayer();
         notificationManager = new NotificationManager();
         eventHandler = new EventHandler(audioPlayer, notificationManager);
     });
@@ -30,7 +30,7 @@ suite('Extension Test Suite', () => {
     });
 
     test('NotificationManager - showBuildNotification', async () => {
-        const showInfoStub = sandbox.stub(vscode.window, 'showInformationMessage').resolves('Open Logs');
+        const showInfoStub = sandbox.stub(vscode.window, 'showInformationMessage').resolves({ title: 'Open Logs' });
         const executeCommandStub = sandbox.stub(vscode.commands, 'executeCommand').resolves();
 
         await notificationManager.showBuildNotification();
