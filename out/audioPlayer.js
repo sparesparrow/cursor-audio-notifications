@@ -32,6 +32,7 @@ const path = __importStar(require("path"));
 const play_sound_1 = __importDefault(require("play-sound"));
 const audioPlayer = (0, play_sound_1.default)();
 class AudioPlayer {
+    _soundsPath;
     constructor() {
         // You may want to define the base directory or get it from a configuration.
         const baseDir = process.cwd();

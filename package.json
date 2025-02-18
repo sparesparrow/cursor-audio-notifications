@@ -1,7 +1,7 @@
 {
     "name": "cursor-audio-notifications",
     "displayName": "Cursor Audio Notifications",
-    "description": "Interactive audio notifications for Cursor IDE",
+    "description": "Interactive audio notifications for Cursor IDE with customizable sounds and voice synthesis",
     "version": "1.0.0",
     "publisher": "sparesparrow",
     "repository": {
@@ -24,7 +24,11 @@
         "notifications",
         "sound",
         "alerts",
-        "productivity"
+        "productivity",
+        "voice",
+        "text-to-speech",
+        "mcp",
+        "chat"
     ],
     "activationEvents": [
         "onStartupFinished"
@@ -40,6 +44,56 @@
             {
                 "command": "audio-notifications.toggleSound",
                 "title": "Audio Notifications: Toggle Sound",
+                "category": "Audio Notifications"
+            },
+            {
+                "command": "audio-notifications.testVoice",
+                "title": "Audio Notifications: Test Voice Synthesis",
+                "category": "Audio Notifications"
+            },
+            {
+                "command": "audio-notifications.toggleChatAudio",
+                "title": "Audio Notifications: Toggle Chat Audio Response",
+                "category": "Audio Notifications"
+            },
+            {
+                "command": "audio-notifications.playChatResponse",
+                "title": "Audio Notifications: Play Last Chat Response",
+                "category": "Audio Notifications"
+            },
+            {
+                "command": "audio-notifications.showAudioHistory",
+                "title": "Audio Notifications: Show Audio History",
+                "category": "Audio Notifications"
+            },
+            {
+                "command": "audio-notifications.openRemoteComposer",
+                "title": "Audio Notifications: Open Remote Composer",
+                "category": "Audio Notifications"
+            },
+            {
+                "command": "audio-notifications.openRemoteChat",
+                "title": "Audio Notifications: Open Remote Chat",
+                "category": "Audio Notifications"
+            },
+            {
+                "command": "audio-notifications.copyLastResponse",
+                "title": "Audio Notifications: Copy Last Assistant Response",
+                "category": "Audio Notifications"
+            },
+            {
+                "command": "audio-notifications.runComposerSequence",
+                "title": "Audio Notifications: Run Composer Command Sequence",
+                "category": "Audio Notifications"
+            },
+            {
+                "command": "audio-notifications.copyModifiedFiles",
+                "title": "Audio Notifications: Copy Modified Files",
+                "category": "Audio Notifications"
+            },
+            {
+                "command": "audio-notifications.startNetworkServer",
+                "title": "Audio Notifications: Start Network Server",
                 "category": "Audio Notifications"
             }
         ],
@@ -65,6 +119,67 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Play sound when debug sessions end"
+                },
+                "audioNotifications.voiceSynthesis": {
+                    "type": "string",
+                    "enum": ["none", "elevenlabs", "espeak"],
+                    "default": "none",
+                    "description": "Voice synthesis provider for spoken notifications"
+                },
+                "audioNotifications.elevenLabsApiKey": {
+                    "type": "string",
+                    "default": "",
+                    "description": "ElevenLabs API key for premium voice synthesis"
+                },
+                "audioNotifications.customSoundSet": {
+                    "type": "string",
+                    "enum": ["default", "retro", "minimal", "nature"],
+                    "default": "default",
+                    "description": "Choose from different sound themes"
+                },
+                "audioNotifications.volume": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "default": 50,
+                    "description": "Volume level for notifications (0-100)"
+                },
+                "audioNotifications.chatAudioEnabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Automatically convert chat responses to audio"
+                },
+                "audioNotifications.chatAudioLanguage": {
+                    "type": "string",
+                    "enum": ["en", "cs"],
+                    "default": "en",
+                    "description": "Language for chat audio responses"
+                },
+                "audioNotifications.maxAudioLength": {
+                    "type": "number",
+                    "default": 3,
+                    "description": "Maximum number of sentences to convert to audio"
+                },
+                "audioNotifications.remoteSettings": {
+                    "type": "object",
+                    "default": {
+                        "x11Display": ":0",
+                        "pulseServer": "tcp:localhost:4713",
+                        "sshHost": "localhost",
+                        "sshUser": "",
+                        "sshPort": 22
+                    },
+                    "description": "Remote X11 and audio settings"
+                },
+                "audioNotifications.networkServer": {
+                    "type": "object",
+                    "default": {
+                        "enabled": false,
+                        "port": 4000,
+                        "host": "localhost",
+                        "authToken": ""
+                    },
+                    "description": "Network server settings for remote command access"
                 }
             }
         }
@@ -74,7 +189,7 @@
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "pretest": "npm run compile && npm run lint",
-        "lint": "eslint src test --ext ts",
+        "lint": "eslint src --ext ts && eslint test --ext ts --config test/.eslintrc.json",
         "test": "node ./out/test/runTest.js",
         "package": "vsce package",
         "publish": "vsce publish"
@@ -85,6 +200,9 @@
         "@types/node": "^16.18.126",
         "@types/sinon": "^10.0.15",
         "@types/vscode": "^1.85.0",
+        "@types/express": "^4.17.21",
+        "@types/cors": "^2.8.17",
+        "@types/node-fetch": "^2.6.11",
         "@typescript-eslint/eslint-plugin": "^5.30.0",
         "@typescript-eslint/parser": "^5.30.0",
         "eslint": "^8.13.0",
@@ -95,6 +213,13 @@
         "vscode-test": "^1.6.1"
     },
     "dependencies": {
-        "play-sound": "^1.1.5"
+        "play-sound": "^1.1.5",
+        "elevenlabs-node": "^1.2.0",
+        "say": "^0.16.0",
+        "node-fetch": "^2.6.7",
+        "os-tmpdir": "^2.0.0",
+        "express": "^4.18.2",
+        "cors": "^2.8.5",
+        "qrcode-generator": "^1.4.4"
     }
 }

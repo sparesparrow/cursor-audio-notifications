@@ -7,7 +7,7 @@ import { EventHandler } from '../../src/handlers/eventHandler';
 import * as path from 'path';
 
 // Mock modules before imports
-const mockPlay = sinon.stub().callsFake((filepath: string, opts: any, cb: any) => {
+const mockPlay = sinon.stub().callsFake((_filepath: string, _opts: any, cb: any) => {
     if (cb) cb(null);
     return null;
 });

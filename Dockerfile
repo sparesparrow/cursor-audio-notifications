@@ -1,46 +1,32 @@
-FROM node:18-slim
+# Build stage
+FROM node:18-bookworm-slim AS builder
 
-# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    alsa-utils \
-    wget \
-    libfuse2 \
-    libgtk-3-0 \
-    libx11-xcb1 \
-    libxcb-dri3-0 \
-    libdrm2 \
-    libgbm1 \
-    libasound2 \
+    git python3 make g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# Create app directory
 WORKDIR /app
-
-# Download Cursor AppImage
-RUN wget https://download.cursor.sh/linux/appImage/x64/Cursor-latest.AppImage -O /usr/local/bin/cursor \
-    && chmod +x /usr/local/bin/cursor
-
-# Install VSCE globally
-RUN npm install -g @vscode/vsce
-
-# Copy package files
 COPY package*.json ./
-
-# Install dependencies
-RUN npm install
-
-# Copy source code
+RUN npm ci --production=false
 COPY . .
-
-# Build extension
 RUN npm run compile
 
-# Package extension
-RUN vsce package
+# Runtime stage
+FROM node:18-bookworm-slim
 
-# Set environment variables
-ENV NODE_ENV=development
-ENV CURSOR_EXECUTABLE=/usr/local/bin/cursor
+RUN apt-get update && apt-get install -y \
+    alsa-utils libasound2 libgbm1 libxcomposite1 \
+    libxcursor1 libxi6 libxtst6 libxss1 libnss3 \
+    libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 \
+    libxkbcommon0 libgtk-3-0 libpulse0 pulseaudio-utils \
+    && rm -rf /var/lib/apt/lists/*
 
-# Command to run tests and create package
-CMD ["sh", "-c", "npm test && vsce package"] 
+WORKDIR /app
+COPY --from=builder /app .
+COPY --from=builder /app/node_modules ./node_modules
+
+USER node
+ENV NODE_ENV=production
+EXPOSE 3000
+
+CMD ["npm", "start"] 

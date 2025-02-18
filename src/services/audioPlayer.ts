@@ -5,18 +5,20 @@ const audioPlayer = playSound();
 
 export class AudioPlayer {
     private _soundsPath: string;
+    private _player: any;
 
     constructor(extensionPath: string) {
         this._soundsPath = path.join(extensionPath, 'sounds');
+        this._player = audioPlayer;
     }
 
-    async playSound(soundName: string): Promise<void> {
+    public async playSound(soundName: string): Promise<void> {
         const soundPath = path.join(this._soundsPath, `${soundName}.mp3`);
         
-        return new Promise((resolve, reject) => {
-            audioPlayer.play(soundPath, (err: Error | null) => {
+        return new Promise<void>((resolve, reject) => {
+            this._player.play(soundPath, { volume: 1.0 }, (err: Error | null) => {
                 if (err) {
-                    console.error('Error playing sound:', err);
+                    console.error('Failed to play sound:', err);
                     reject(err);
                 } else {
                     resolve();

@@ -27,6 +27,8 @@ exports.EventHandler = void 0;
 // src/eventHandler.ts
 const vscode = __importStar(require("vscode"));
 class EventHandler {
+    _audioPlayer;
+    _notificationManager;
     constructor(_audioPlayer, _notificationManager) {
         this._audioPlayer = _audioPlayer;
         this._notificationManager = _notificationManager;

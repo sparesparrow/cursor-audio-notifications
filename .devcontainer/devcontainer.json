@@ -1,12 +1,15 @@
 {
-    "name": "Cursor Audio Notifications Dev",
+    "name": "Audio Notifications Dev",
     "dockerFile": "../Dockerfile",
     "context": "..",
     
     // Features to add to the dev container
     "features": {
-        "ghcr.io/devcontainers/features/node:1": {},
-        "ghcr.io/devcontainers/features/git:1": {}
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "18"
+        },
+        "ghcr.io/devcontainers/features/common-utils:2": {},
+        "ghcr.io/devcontainers/features/desktop-lite:1": {}
     },
 
     // Configure tool-specific properties
@@ -15,21 +18,23 @@
             "extensions": [
                 "dbaeumer.vscode-eslint",
                 "esbenp.prettier-vscode",
-                "ms-vscode.vscode-typescript-tslint-plugin"
+                "ms-vscode.vscode-typescript-tslint-plugin",
+                "ms-vscode.test-adapter-converter"
             ],
             "settings": {
                 "editor.formatOnSave": true,
                 "editor.defaultFormatter": "esbenp.prettier-vscode",
-                "typescript.tsdk": "node_modules/typescript/lib"
+                "typescript.tsdk": "node_modules/typescript/lib",
+                "audioNotifications.soundEnabled": false
             }
         }
     },
 
     // Use 'forwardPorts' to make a list of ports inside the container available locally
-    "forwardPorts": [],
+    "forwardPorts": [3000],
 
     // Use 'postCreateCommand' to run commands after the container is created
-    "postCreateCommand": "npm install",
+    "postCreateCommand": "npm install && sudo chown node /workspace",
 
     // Set `remoteUser` to `root` to connect as root instead
     "remoteUser": "node",
@@ -40,6 +45,13 @@
 
     // Environment variables
     "remoteEnv": {
+        "DISPLAY": ":99",
+        "PULSE_SERVER": "unix:/run/user/1000/pulse/native",
         "NODE_ENV": "development"
-    }
+    },
+
+    "mounts": [
+        "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind",
+        "source=${env:HOME}/.pulse,target=/run/user/1000/pulse,type=bind"
+    ]
 } 

@@ -1,6 +1,36 @@
+# Build artifacts
+out/
+dist/
+*.vsix
+
+# Dependencies
+node_modules/
+.yarn/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Test outputs
+test-results/
+coverage/
+.nyc_output/
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
 node_modules/yocto-queue/license
 node_modules
 */node_modules
-out/
-dist/
 

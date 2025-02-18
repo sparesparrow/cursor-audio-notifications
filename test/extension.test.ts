@@ -1,9 +1,33 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
 import * as sinon from 'sinon';
-import { AudioPlayer } from '../src/audioPlayer';
-import { NotificationManager } from '../src/notificationManager';
-import { EventHandler } from '../src/eventHandler';
+import { AudioPlayer } from '../src/services/audioPlayer';
+import { NotificationManager } from '../src/services/notificationManager';
+import { EventHandler } from '../src/handlers/eventHandler';
+import * as path from 'path';
+
+interface PlayOptions {
+    volume?: number;
+}
+
+interface Player {
+    play(filepath: string, opts: PlayOptions, cb: (err: Error | null) => void): void | null;
+}
+
+// Mock modules before imports
+const mockPlay = sinon.stub().callsFake((_filepath: string, _opts: PlayOptions, cb: (err: Error | null) => void) => {
+    if (cb) cb(null);
+    return null;
+});
+
+const mockPlayer: Player = {
+    play: mockPlay
+};
+
+// Mock the entire play-sound module
+require.cache[require.resolve('play-sound')] = {
+    exports: () => mockPlayer
+} as NodeModule;
 
 suite('Extension Test Suite', () => {
     let audioPlayer: AudioPlayer;
@@ -13,7 +37,8 @@ suite('Extension Test Suite', () => {
 
     setup(() => {
         sandbox = sinon.createSandbox();
-        audioPlayer = new AudioPlayer();
+        const extensionPath = path.resolve(__dirname, '../');
+        audioPlayer = new AudioPlayer(extensionPath);
         notificationManager = new NotificationManager();
         eventHandler = new EventHandler(audioPlayer, notificationManager);
     });
