@@ -5,7 +5,7 @@ const audioPlayer = playSound();
 
 export class AudioPlayer {
     private _soundsPath: string;
-    private _player: any;
+    private _player: ReturnType<typeof playSound>;
 
     constructor(extensionPath: string) {
         this._soundsPath = path.join(extensionPath, 'sounds');
