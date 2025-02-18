@@ -1,3 +1,6 @@
 node_modules/yocto-queue/license
 node_modules
 */node_modules
+out/
+dist/
+

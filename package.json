@@ -4,15 +4,12 @@
     "description": "Interactive audio notifications for Cursor IDE",
     "version": "1.0.0",
     "engines": {
-        "vscode": "^1.60.0"
+        "vscode": "^1.75.0"
     },
     "categories": [
         "Other"
     ],
-    "activationEvents": [
-        "onCommand:audio-notifications.showAlert",
-        "onCommand:audio-notifications.toggleSound"
-    ],
+    "activationEvents": [],
     "main": "./out/extension.js",
     "contributes": {
         "commands": [
